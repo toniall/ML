@@ -1,10 +1,9 @@
 
-# <center> Projeto: Identificando fraude no Email da Enron.</center>  <center> Identificação de suspeitos utilizando Machine Learning</center> 
-## <center> Udacity Data Analyst Nanodegree</center>
-
-<center> <span style="font-size: 1.5em;">[Vagner Sanches Vasconcelos][1]</span></center>
+# <center> Projeto: Identificando fraude no Email da Enron.</center>  <center> Identificação de suspeitos utilizando Machine Learning</center>   
+## <center> Udacity Data Analyst Nanodegree</center>    
+<center> <span style="color:blue; font-size: 1.5em;">Vagner Sanches Vasconcelos</span></center>
+<center> <span style="color:blue; font-size: 1.0em;">vsvasconcelos@gmail.com</span></center>
 <center> <span style="color:red">25 de maio de 2017</span> </center>
-[1]:https://www.linkedin.com/in/vsvasconcelos/
 
 # 1. Introdução
 Este projeto utiliza um conjunto de dados que contém informações de e-mails enviados e/ou recebidos e dados financeiros de funcionários da empresa [Enron Corporation](https://pt.wikipedia.org/wiki/Enron), que em 2000 era uma das maiores empresas dos Estados Unidos e dois anos mais tarde faliu depois de um dos maiores escândalos de corrupção da história americana, conforme apresentado no vídeo [Enron os mais espertos da sala](https://www.youtube.com/watch?v=5jORoEE-CEk).     
