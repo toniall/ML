@@ -2094,13 +2094,13 @@ main()
     
 
 
-Comparando os resultados da máquina DT sem e com os atributos criandos, observa-se piora em todas as métricas; assim, esses atributos __não serão incluidas na sintonia do algoritmo__.   
+Comparando os resultados da máquina DT sem e com os atributos criados, observa-se piora em todas as métricas; assim, esses atributos __não serão incluídas na sintonia do algoritmo__.   
 - Resumo dos resultados     
 DT sem atributos criados -> Accuracy: 0.86553	 Precision: 0.47658	   Recall: 0.08650	  F1: 0.14642	 F2: 0.10343   
 DT com atributos criados -> Accuracy: 0.86413	 Precision: 0.42910	   Recall: 0.05750	  F1: 0.10141	 F2: 0.06955
 
 # 5. Calibrando a Máquina Decision Trees (tuning)
-> A calibração (tuning) consiste na otimização da máquina de aprendizagem, na qual são testados várias parâmetrizações; seu objetivo é que o algoritmo apresente os melhores resultados (métricas) possíveis.  
+> A calibração (tuning) consiste na otimização da máquina de aprendizagem, na qual são testados várias parametrizações; seu objetivo é que o algoritmo apresente os melhores resultados (métricas) possíveis.  
 
 > Conforme [Birattari (2009)](http://www.springer.com/cn/book/9783642004827), um excesso de ajustes pode provocar um problema semelhante ao [(overfitting)](https://pt.wikipedia.org/wiki/Sobreajuste), conhecido como [__over-tuning__](https://en.wikipedia.org/wiki/Hyperparameter_optimization).
 
@@ -2269,7 +2269,7 @@ best_features
 
 
 
-De forma a permitir comparação com as *features* anteriores, adotaremos a mesma quantidade de *features* (sete), selecionado as que possuirem maior *score*
+De forma a permitir comparação com as *features* anteriores, adotaremos a mesma quantidade de *features* (sete), selecionado as que possuírem maior *score*
 
 
 ```python
@@ -2326,7 +2326,7 @@ main()
 Conforme resultado, essa máquina ainda não atende o requisito de *Precision* e *Recall* mínimo de 0.3.
 
 ## 5.2 Combinando tudo (Pipeline)
-Vamos utilizar agora outra funcionalidade da biblioteca SciKit que é o [pipeline](http://scikit-learn.org/stable/modules/pipeline.html), que possibililita combinar multiplos métodos sucessivamente, combinaremos:              
+Vamos utilizar agora outra funcionalidade da biblioteca SciKit que é o [pipeline](http://scikit-learn.org/stable/modules/pipeline.html), que possibilita combinar múltiplos métodos sucessivamente, combinaremos:              
   
 > a) Normalização dos dados, utilizando [StandardScaler](http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html);  
 > b) Seleção das Features mais importantes, utilizando [SelectKBest](http://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectKBest.html);            
@@ -2384,7 +2384,7 @@ features_train, features_test, labels_train, labels_test = \
     train_test_split(features, labels, test_size=0.3, random_state=42)
 ```
 
->Parâmetrização que será testada ...
+>Parametrização que será testada ...
 
 
 ```python
@@ -2554,3 +2554,5 @@ Portanto, se a máquina proposta fosse utilizada como tomadora de decisão em pr
 [Sebastian Raschka](https://sebastianraschka.com/blog/2016/model-evaluation-selection-part3.html)
 
 [Tuning Metaheuristics: A Machine Learning Perspective](http://zeus.inf.ucv.cl/~bcrawford/MII-748-METAHEURISTICAS/Tuning%20Metaheuristics.pdf)
+
+[Nicholas Hoh](https://github.com/nickypie/ConnectIntensive)
