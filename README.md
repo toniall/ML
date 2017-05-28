@@ -3,7 +3,7 @@
 ## <center> Udacity Data Analyst Nanodegree</center>    
 <center> <span style="color:blue; font-size: 1.5em;">Vagner Sanches Vasconcelos</span></center>
 <center> <span style="color:blue; font-size: 1.0em;">vsvasconcelos@gmail.com</span></center>
-<center> <span style="color:red">25 de maio de 2017</span> </center>
+<center> <span style="color:red">27 de maio de 2017</span> </center>
 
 # 1. Introdução
 Este projeto utiliza um conjunto de dados que contém informações de e-mails enviados e/ou recebidos e dados financeiros de funcionários da empresa [Enron Corporation](https://pt.wikipedia.org/wiki/Enron), que em 2000 era uma das maiores empresas dos Estados Unidos e dois anos mais tarde faliu depois de um dos maiores escândalos de corrupção da história americana, conforme apresentado no vídeo [Enron os mais espertos da sala](https://www.youtube.com/watch?v=5jORoEE-CEk).     
@@ -36,12 +36,11 @@ sys.path.append("../tools/")
 
 from feature_format import featureFormat, targetFeatureSplit
 from tester import dump_classifier_and_data, main
-### Carga do dicionário contendo o conjunto de dados
 with open("final_project_dataset.pkl", "r") as data_file:
     data_dict = pickle.load(data_file)
 ```
 
-Os dados são carregado em uma estrutura de dados tipo dict (dicionário), na qual cada par chave/valor corresponde a um funcionário. A chave do dicionário é o nome do funcionário, e o valor é outro dicionário, que contém o nome de todos os atributos e seus valores para aquele funcionário. Os atributos nos dados possuem basicamente três tipos: atributos financeiros, de email e rótulos POI (pessoa de interesse).
+Os dados são carregados em uma estrutura de dados tipo dict (dicionário), na qual cada par chave/valor corresponde a um funcionário. A chave do dicionário é o nome do funcionário, e o valor é outro dicionário, que contém o nome de todos os atributos e seus valores para aquele funcionário. Os atributos nos dados possuem basicamente três tipos: atributos financeiros, de email e rótulos POI.
 > __Atributos financeiros:__ ['salary', 'deferral_payments', 'total_payments', 'loan_advances', 'bonus', 'restricted_stock_deferred', 'deferred_income', 'total_stock_value', 'expenses', 'exercised_stock_options', 'other', 'long_term_incentive', 'restricted_stock', 'director_fees'] (todos em dólares americanos (USD))   
 
 > __Atributos de email:__ ['to_messages', 'email_address', 'from_poi_to_this_person', 'from_messages', 'from_this_person_to_poi', 'shared_receipt_with_poi'] (as unidades aqui são geralmente em número de emails; a exceção notável aqui é o atributo ‘email_address’, que é uma string) 
@@ -56,9 +55,6 @@ Para sustentar a seleção dos atributos que serão utilizados foi realizado ini
 ```python
 import pandas as pd
 import numpy as np
-#data_dict_df = pd.DataFrame(data_dict)
-#colunas -> valores do dict
-#linhas -> chaves do dict (nome das pessoas)
 data_dict_df = pd.DataFrame(data_dict.values(), index=data_dict.keys())
 ```
 
@@ -76,7 +72,7 @@ data_dict_df.shape
 
 
 
-A base possui 146 linhas e 21 colunas.    
+A base possui 146 Observações (linhas) e 21 Variáveis (colunas).    
 >Visão geral da base:
 
 
@@ -472,7 +468,7 @@ len(data_dict_df)
 
 
 
-Existem 146 funcionários na base de dados sendo que cada um deles pode possui até 21 atributos registrados.    
+Existem 146 funcionários na base de dados sendo que cada um deles possui até 21 atributos registrados.    
 Como existem muitos valores faltantes (NaN) nem todos possuem todos os atributos.   
 >Quantos atributos existem para cada variável?
 
@@ -509,7 +505,7 @@ data_dict_df.count()
 
 
 
-Somente o atributo __poi__ está presente para todos os funcionários da base; algumas outras observações: somente 4 funcionários possuem dados da variável __loan_advances__ e 95 possuem informações da variável __salary__.    
+Somente o atributo __poi__ está presente para todos os funcionários da base; algumas outras observações, por  exemplo: somente 4 funcionários possuem dados da variável __loan_advances__ e 95 possuem informações da variável __salary__.    
 >Quantas variáveis faltantes cada funcionário possui?
 
 
@@ -540,9 +536,8 @@ num_var_func.sort_values(ascending=False).head(15)
 
 
 
-O funcionário __LOCKHART EUGENE E__ tem 20 variáveis faltantes, como existem ao todos 21 variáveis, ele só possui uma variável lançada.    
-Já o __THE TRAVEL AGENCY IN THE PARK__ não parece ser realmente uma pessoa, além de possuir 18 variáveis faltantes, assim, também será excluido.               
->Que variáveis faltam para __LOCKHART EUGENE E__ ?
+O funcionário __LOCKHART EUGENE E__ tem 20 variáveis faltantes, como existem ao todos 21 variáveis, ele só possui uma variável lançada. Já o __THE TRAVEL AGENCY IN THE PARK__ não parece ser realmente uma pessoa, além de possuir 18 variáveis faltantes, assim, também será excluido.               
+>Que variável __LOCKHART EUGENE E__ possui?
 
 
 ```python
@@ -577,7 +572,7 @@ data_dict_df.loc['LOCKHART EUGENE E']
 
 
 
-Somente a variável __poi__, portanto, __LOCKHART EUGENE E__ será retirado da base, uma vez que não possuímos dados sobre este funcionário.              
+Somente a variável __poi__, portanto, __LOCKHART EUGENE E__, por isso será retirado da base, uma vez que não possuímos dados sobre este funcionário.              
 >E para __THE TRAVEL AGENCY IN THE PARK__ ?
 
 
@@ -1140,7 +1135,7 @@ data_dict_df.sort_values(by='total_payments', ascending=False)[data_dict_df.poi=
 
 
 
-Dois que mais receberam, __LAY KENNETH L__, era o Chairman Board e __SKILLING JEFFREY K__ o CEO.        
+Os dois que mais receberam, __LAY KENNETH L__, era o Chairman Board e __SKILLING JEFFREY K__ o CEO.        
 __FASTOW ANDREW S__, que era CFO, foi o 7º que mais recebeu.   
 >Dos funcionários que não são POI, quem são o 5 que mais receberam dinheiro?
 
@@ -1422,8 +1417,8 @@ df_mean[df_mean.POI_NPOI < 1].sort_values(by = "POI_NPOI", ascending=True)
 
 
 
-Além das relações acima, também chamou atenção as variáveis __director_fees__ e __restricted_stock_deferred__, pois nenhum POI as tinha; contudo, conforme visto anteriormente, em toda a base somente 17 e 18 funcionários, respectivamente, apresentaram essas variáveis, assim, não parece ser um desvio.   
-A variável que mais chama atenção é a __loan_advances__, contudo, conforme visto acima, há apenas 4 registros desta variável; __exercised_stock_options__ e __total_payments__ também se destacam.      
+Além das relações acima, também chamou atenção as variáveis __director_fees__ e __restricted_stock_deferred__, pois nenhum POI as possui; contudo, conforme visto anteriormente, em toda a base somente 17 e 18 funcionários, respectivamente, apresentaram essas variáveis, assim, não parece ser um desvio.   
+A variável que mais chama atenção é a __loan_advances__, contudo, conforme visto acima, há apenas 4 registros desta variável; __exercised_stock_options__ e __total_payments__ também se destacam.          
 Uma outra ideia de encontrar candidatos a atributos é identificar quais variáveis possuem mais *outliers*, uma vez que em fraudes o que mais interessa são as exceções.
 >Quais as variáveis que mais possuem *outliers*?       
 
@@ -1467,13 +1462,34 @@ n_outliers.sort_values(ascending=False)
 
 
 Desconsiderando as variáveis que não são numéricas (float64), as que mais tiveram outliers foram: __total_stock_value__, __from_messages__ e __restricted_stock__. Assim, considerando os dois critérios adotados: __relação das médias dos POI/NPOI__ e __número de outliers__, além da variável __poi__ serão utilizadas como atributos:
->Gerando a lista:
+>Gerando a lista de atributos 1:
 
 
 ```python
-features_list = ['poi','loan_advances', 'exercised_stock_options', 'total_payments',
+features_list_1 = ['poi','loan_advances', 'exercised_stock_options', 'total_payments',
                 'total_stock_value', 'from_messages', 'restricted_stock' ]
 ```
+
+## 2.1 Criando novas *Features*
+
+Podemos pensar também em combinar os atributos (*features*) originais de forma a buscar melhorar o desempenho do classificador; no caso específico deste projeto, pode-se pensar:
+>Quem enviou mais e-mails para um POI?             
+>Quem recebeu mais e-mals de um POI?
+
+Seria uma hipótese de que os POIs se comunicam mais entre si, com isto, propomos duas novas features:
+
+    - from_this_person_to_poi: razão da quantidade de e-mails enviados para um POI em relação a quantidade total de e-mail enviados;
+    - from_poi_to_this_person: razão da quantidade de e-mails recebidos de um POI em relação a quantidade total de e-mails recebidos.            
+>Gerando a lista de atributos 2:
+
+
+```python
+features_list_2 = ['poi','loan_advances', 'exercised_stock_options', 'total_payments',
+                   'total_stock_value', 'from_messages', 'restricted_stock','from_this_person_to_poi' , 
+                   'from_poi_to_this_person']
+```
+
+No __capítulo 4 - Testando os Classificadores__ - utilizaremos a lista de atributos 2 de forma a verificar o impacto dos novos atributos no desempenho do classificador.
 
 # 3. Removendo *outliers*
 
@@ -1515,9 +1531,11 @@ len(data_dict)
 
 Ok, restaram 143, uma vez que inicialmente haviam 146 e foram excluídos 3.
 Vamos carregar os dados formatados para utilização na [scikit-learn](http://scikit-learn.org/stable/).  
+>Utilizando a lista de atributos 1.
 
 
 ```python
+features_list = features_list_1
 data = featureFormat(data_dict, features_list)
 data.shape
 ```
@@ -1539,7 +1557,7 @@ import seaborn as sns
 ```
 
     Populating the interactive namespace from numpy and matplotlib
-    
+
 
 
 ```python
@@ -1556,12 +1574,12 @@ sns.boxplot(data=data_df_sem_poi)
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7fc46c9cff50>
+    <matplotlib.axes._subplots.AxesSubplot at 0x7fcd1d912fd0>
 
 
 
 
-![png](output_56_1.png)
+![png](output_60_1.png)
 
 
 Conforme figura acima, há vários *outliers* em quase todas as variáveis.    
@@ -1600,12 +1618,12 @@ sns.boxplot(data=data_df_sem_poi.from_messages)
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7fc46c9cf210>
+    <matplotlib.axes._subplots.AxesSubplot at 0x7fcd1d8fcc90>
 
 
 
 
-![png](output_60_1.png)
+![png](output_64_1.png)
 
 
 Ok, foi só um detalhe das escalas das variáveis; no caso a ordem de grandeza da variável __from_messages__ é muito menor que das outras variáveis. Provavelmente teremos que realizar uma normalização destes dados.            
@@ -1840,34 +1858,48 @@ fig, ax = plt.subplots(figsize=(15,10))
 ax.set_xlabel('Features', fontsize = 20)
 plt.tick_params(labelsize=15)
 sns.boxplot(data=data_df_sem_poi)
+plt.tick_params(labelsize=15)
+plt.xticks(rotation=75)
+sns.boxplot(data=data_df_sem_poi)
 ```
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7fc46a3afad0>
+    <matplotlib.axes._subplots.AxesSubplot at 0x7fcd1b312d50>
 
 
 
 
-![png](output_71_1.png)
+![png](output_75_1.png)
 
 
 Observando os valores do eixo y, é possível notar a diminuição em uma ordem de grandeza em relação ao boxplot anterior, comprovando a remoção do *outlier*.
 
 # 4. Testando os Classificadores
 
-Vamos carregar o dicionário com os dados já tratados e formatá-los conforme a biblioteca [scikit-learn](https://pt.wikipedia.org/wiki/Scikit-learn) necessita. Para isto, serão utilizados as funções __featureFormat__ e __targetFeatureSplit__ do programa __feature_format.py__, que pode ser acessado no [GitHub](https://github.com/vsvasconcelos/ML).
+Vamos carregar o dicionário com os dados já tratados e formatá-los conforme a biblioteca [scikit-learn](https://pt.wikipedia.org/wiki/Scikit-learn) necessita; para isso, serão utilizados as funções __featureFormat__ e __targetFeatureSplit__ do programa __feature_format.py__, que pode ser acessado no [GitHub](https://github.com/vsvasconcelos/ML).             
+>Vamos testar inicialmente com a lista de atributos 1.
 
 
 ```python
+features_list = features_list_1
 my_dataset = data_dict
 data = featureFormat(my_dataset, features_list, sort_keys = True)
 labels, features = targetFeatureSplit(data)
 ```
 
-Para divisão dos  conjuntos de treinamento e de teste será utilizado a biblioteca de [validação cruzada](https://en.wikipedia.org/wiki/Cross-validation_(statistics) do [sciki-learn](http://scikit-learn.org/0.17/modules/generated/sklearn.cross_validation.train_test_split.html#sklearn.cross_validation.train_test_split).     
-Usaremos 70% dos dados para treinamento das máquinas de aprendizagem e o restante para os testes.
+Para divisão dos  conjuntos de treinamento e de teste será utilizado a biblioteca de [validação cruzada](http://scikit-learn.org/stable/modules/cross_validation.html) do [sciki-learn](http://scikit-learn.org/0.17/modules/generated/sklearn.cross_validation.train_test_split.html#sklearn.cross_validation.train_test_split).     
+Usaremos 70% dos dados para treinamento das máquinas de aprendizagem e o restante para os testes.   
+>Por que nós dividimos o conjunto de dados em conjuntos de treinamento e teste?
+
+A justificativa para divisão do conjunto de dados em subconjuntos de treinamento e testes é que com isto, a máquina:   
+- Nos fornece uma estimativa de desempenho em um conjunto de dados independente, uma vez que o conjunto de teste só é utilizado para validar o modelo;
+- Nos fornece uma verificação do sobreajuste [(overfitting)](https://pt.wikipedia.org/wiki/Sobreajuste).  
+
+A ideia geral é da divisão é buscar o __conjunto de treinamento__ que apresente o melhor resultado de aprendizagem e o __conjunto de teste__ que resulte na melhor validação do aprendizado da máquina. Neste sentido, conforme [Stephens e Diesing (2014)](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0093950), "[...] It is an important step to tune the parameters of the models to the training data. The aim is to find a balance between building a model that can classify the training data effectively without overfitting to the random fluctuations in the training data. Some models are more sensitive than others to the parameters chosen."
+
+>Na __validação__, o __conjunto de teste__ é utilizado para verificar as características do modelo com dados que não foram utilizados na fase de treinamento.
 
 ## 4.1 Pré-processamento dos dados
 Quando as variáveis possuem ordens de grandeza muito diferentes, que é o que foi constatado na fase de AED anterior, faz-se necessário deixá-las em uma mesma ordem. A biblioteca sciki-learn possui um [pacote de pré-processamento](http://scikit-learn.org/stable/modules/preprocessing.html) de dados que facilitam tarefas como essa.
@@ -1916,7 +1948,7 @@ main()
     	Accuracy: 0.78393	Precision: 0.20937	Recall: 0.22350	F1: 0.21620	F2: 0.22052
     	Total predictions: 15000	True positives:  447	False positives: 1688	False negatives: 1553	True negatives: 11312
     
-    
+
 
 ### 4.2.2  Support Vector Machine (SVM)
 Agora testaremos a [SVM](https://pt.wikipedia.org/wiki/M%C3%A1quina_de_vetores_de_suporte), a documentação pode ser acessada [aqui](http://scikit-learn.org/stable/modules/svm.html).
@@ -1935,7 +1967,7 @@ main()
       max_iter=-1, probability=False, random_state=None, shrinking=True,
       tol=0.001, verbose=False)
     Precision or recall may be undefined due to a lack of true positive predicitons.
-    
+
 
 ### 4.2.3 Decision Tree (DT)
 Agora testaremos a [Árvore de Decisão](https://en.wikipedia.org/wiki/Decision_tree_learning), a documentação pode ser acessada [aqui](http://scikit-learn.org/stable/modules/tree.html).
@@ -1953,10 +1985,10 @@ main()
                 min_impurity_split=1e-07, min_samples_leaf=1,
                 min_samples_split=50, min_weight_fraction_leaf=0.0,
                 presort=False, random_state=None, splitter='best')
-    	Accuracy: 0.86560	Precision: 0.47765	Recall: 0.08550	F1: 0.14504	F2: 0.10230
-    	Total predictions: 15000	True positives:  171	False positives:  187	False negatives: 1829	True negatives: 12813
+    	Accuracy: 0.86553	Precision: 0.47658	Recall: 0.08650	F1: 0.14642	F2: 0.10343
+    	Total predictions: 15000	True positives:  173	False positives:  190	False negatives: 1827	True negatives: 12810
     
-    
+
 
 ### 4.2.4 Boosted Decision Trees (BDT)
 Agora testaremos o *Adaboost* aplicado a árvores de decisão, também conhecido como [BDT](https://pt.wikipedia.org/wiki/AdaBoost), cuja documentação pode ser acessada [aqui](http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html#sklearn.ensemble.AdaBoostClassifier).
@@ -1974,10 +2006,10 @@ main()
                 min_impurity_split=1e-07, min_samples_leaf=1,
                 min_samples_split=50, min_weight_fraction_leaf=0.0,
                 presort=False, random_state=None, splitter='best')
-    	Accuracy: 0.86560	Precision: 0.47790	Recall: 0.08650	F1: 0.14649	F2: 0.10344
-    	Total predictions: 15000	True positives:  173	False positives:  189	False negatives: 1827	True negatives: 12811
+    	Accuracy: 0.86593	Precision: 0.48509	Recall: 0.08950	F1: 0.15112	F2: 0.10694
+    	Total predictions: 15000	True positives:  179	False positives:  190	False negatives: 1821	True negatives: 12810
     
-    
+
 
 ### 4.2.5 K-means
 Todos os outros algoritmos utilizados até aqui se enquadram em uma categoria denominada [Aprendizagem Supervisionada](https://en.wikipedia.org/wiki/Supervised_learning), agora utilizaremos o algoritmo [K-means](https://pt.wikipedia.org/wiki/K-means), que é do tipo [Aprendizagem não-supervisionado](https://en.wikipedia.org/wiki/Unsupervised_learning). A documentação do K-means pode ser acessada [aqui](http://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html).
@@ -1996,20 +2028,85 @@ main()
     	Accuracy: 0.83920	Precision: 0.23791	Recall: 0.09350	F1: 0.13424	F2: 0.10642
     	Total predictions: 15000	True positives:  187	False positives:  599	False negatives: 1813	True negatives: 12401
     
-    
+
 
 Analisando as saídas acima, temos que o melhor resultado, com relação a métrica *accuracy* foi obtida pelos algoritmos Boosted Decision Trees (BDT) e Decision Trees (DT); vamos calibrar (tuning) o DT.   
 - Resumo dos resultados
 
         NB      Accuracy: 0.78393	Precision: 0.20937	Recall: 0.22350	F1: 0.21620	F2: 0.22052	            
         SVM     Accuracy: -------    Precision: -------	Recall: -------	F1: -------	F2: -------	 
-        DT      Accuracy: 0.86560	Precision: 0.47765	Recall: 0.08550	F1: 0.14504	F2: 0.10230 
-        BDT     Accuracy: 0.86560	Precision: 0.47790	Recall: 0.08650	F1: 0.14649	F2: 0.10344
+        DT      Accuracy: 0.86553	Precision: 0.47658	Recall: 0.08650	F1: 0.14642	F2: 0.10343
+        BDT     Accuracy: 0.86593	Precision: 0.48509	Recall: 0.08950	F1: 0.15112	F2: 0.10694
         K-means Accuracy: 0.83920	Precision: 0.23791	Recall: 0.09350	F1: 0.13424	F2: 0.10642
 
-# 5. Sintonizando a Máquina Decision Trees (tuning)
-Para realizar a calibração vamos utilizar a biblioteca [GridSearchCV](http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) do sciki-learn, que é uma forma de analisar sistematicamente múltiplas combinações de parâmetros, fazendo validação cruzada ao longo do processo, para determinar qual calibragem (parametrização) apresenta o melhor desempenho. 
+## 4.3 Testando o Desempenho com os Novos Atributos Criados
 
+Verificaremos agora o impacto no algoritmo DT com a Lista de Atributos 2, que contém os 2 novos atributos criados.    
+>Criando os novos Atributos:
+
+
+```python
+data_dict_df_2 = data_dict_df
+data_dict_df_2['from_this_person_to_poi_ratio'] = \
+                                        data_dict_df_2['from_this_person_to_poi']/data_dict_df_2['from_messages']
+data_dict_df_2['from_poi_to_this_person_ratio'] = \
+                                        data_dict_df_2['from_poi_to_this_person']/data_dict_df_2['from_messages']
+filled_df = data_dict_df_2.fillna(value='NaN')
+data_dict_2 = filled_df.to_dict(orient='index')
+data_dict_df_2.shape
+```
+
+
+
+
+    (143, 23)
+
+
+
+Agora a base ficou com 23 atributos.
+
+
+```python
+my_dataset_2 = data_dict_2
+data_2 = featureFormat(my_dataset_2, features_list_2, sort_keys = True)
+data_2[np.isnan(data_2)]=0
+labels, features = targetFeatureSplit(data_2)
+
+scaler = preprocessing.MinMaxScaler()
+features = scaler.fit_transform(features)
+
+features_train, features_test, labels_train, labels_test = \
+    train_test_split(features, labels, test_size=0.3, random_state=42)
+
+from sklearn.tree import DecisionTreeClassifier
+clf = DecisionTreeClassifier(criterion='entropy',min_samples_split=50)
+dump_classifier_and_data(clf, my_dataset_2, features_list_2)
+main()
+```
+
+    DecisionTreeClassifier(class_weight=None, criterion='entropy', max_depth=None,
+                max_features=None, max_leaf_nodes=None,
+                min_impurity_split=1e-07, min_samples_leaf=1,
+                min_samples_split=50, min_weight_fraction_leaf=0.0,
+                presort=False, random_state=None, splitter='best')
+    	Accuracy: 0.86413	Precision: 0.42910	Recall: 0.05750	F1: 0.10141	F2: 0.06955
+    	Total predictions: 15000	True positives:  115	False positives:  153	False negatives: 1885	True negatives: 12847
+    
+
+
+Comparando os resultados da máquina DT sem e com os atributos criandos, observa-se piora em todas as métricas; assim, esses atributos __não serão incluidas na sintonia do algoritmo__.   
+- Resumo dos resultados     
+DT sem atributos criados -> Accuracy: 0.86553	 Precision: 0.47658	   Recall: 0.08650	  F1: 0.14642	 F2: 0.10343   
+DT com atributos criados -> Accuracy: 0.86413	 Precision: 0.42910	   Recall: 0.05750	  F1: 0.10141	 F2: 0.06955
+
+# 5. Calibrando a Máquina Decision Trees (tuning)
+> A calibração (tuning) consiste na otimização da máquina de aprendizagem, na qual são testados várias parâmetrizações; seu objetivo é que o algoritmo apresente os melhores resultados (métricas) possíveis.  
+
+> Conforme [Birattari (2009)](http://www.springer.com/cn/book/9783642004827), um excesso de ajustes pode provocar um problema semelhante ao [(overfitting)](https://pt.wikipedia.org/wiki/Sobreajuste), conhecido como [__over-tuning__](https://en.wikipedia.org/wiki/Hyperparameter_optimization).
+
+Para realizar a [calibração (afinação de parâmetros)](http://scikit-learn.org/stable/modules/grid_search.html#grid-search-tips) utilizamos a biblioteca [GridSearchCV](http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) do sciki-learn, que é uma forma de analisar sistematicamente múltiplas combinações de parâmetros, fazendo validação cruzada ao longo do processo, para determinar qual calibragem (parametrização) apresenta o melhor desempenho.   
+
+>Calibrando o modelo ...
 
 
 ```python
@@ -2040,11 +2137,11 @@ main()
     	Accuracy: 0.86160	Precision: 0.39205	Recall: 0.06900	F1: 0.11735	F2: 0.08261
     	Total predictions: 15000	True positives:  138	False positives:  214	False negatives: 1862	True negatives: 12786
     
-    
+
 
 Abaixo seguem os resultados antes e depois da calibração do algoritmo DT, no qual se observa piora em todas as métricas.    
-> Accuracy: 0.86560	  Precision: 0.47765	Recall: 0.08550	  F1: 0.14504	F2: 0.10230        
-> Accuracy: 0.86160	  Precision: 0.39205    Recall: 0.06900	  F1: 0.11735	F2: 0.08261
+> Accuracy: 0.86553	  Precision: 0.47658    Recall: 0.08650	  F1: 0.14642	F2: 0.10343       
+> Accuracy: 0.86160	  Precision: 0.39205	Recall: 0.06900	  F1: 0.11735	F2: 0.08261
 
 Como o objetivo é que os valores das métricas Precision e Recall sejam de pelo menos 0.3, até aqui isso não foi conseguido. Assim, temos que tentar melhorar a máquina de aprendizagem. A biblioteca SciKit possui mais ferramentas que podem nos auxiliar, vamos utilizá-las.
 
@@ -2224,7 +2321,7 @@ main()
     	Accuracy: 0.84429	Precision: 0.35531	Recall: 0.11050	F1: 0.16857	F2: 0.12816
     	Total predictions: 14000	True positives:  221	False positives:  401	False negatives: 1779	True negatives: 11599
     
-    
+
 
 Conforme resultado, essa máquina ainda não atende o requisito de *Precision* e *Recall* mínimo de 0.3.
 
@@ -2243,9 +2340,11 @@ from sklearn.pipeline import Pipeline
 from sklearn import preprocessing
 from sklearn.decomposition import PCA
 from sklearn.model_selection import GridSearchCV, StratifiedShuffleSplit
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeClassifier, export_graphviz
 from sklearn.feature_selection import SelectKBest
 ```
+
+>Carregando a lista com todos os atributos ...
 
 
 ```python
@@ -2284,6 +2383,8 @@ labels, features = targetFeatureSplit(data)
 features_train, features_test, labels_train, labels_test = \
     train_test_split(features, labels, test_size=0.3, random_state=42)
 ```
+
+>Parâmetrização que será testada ...
 
 
 ```python
@@ -2351,7 +2452,7 @@ best_clf
 
 
 
-    Pipeline(steps=[('scaler', StandardScaler(copy=True, with_mean=True, with_std=True)), ('selector', SelectKBest(k=18, score_func=<function f_classif at 0x7fc4691149b0>)), ('reducer', PCA(copy=True, iterated_power='auto', n_components=2, random_state=42,
+    Pipeline(steps=[('scaler', StandardScaler(copy=True, with_mean=True, with_std=True)), ('selector', SelectKBest(k=18, score_func=<function f_classif at 0x7fcd1a2087d0>)), ('reducer', PCA(copy=True, iterated_power='auto', n_components=2, random_state=42,
       svd_solver='auto', tol=0.0, whiten=False)), ('classifi...it=2, min_weight_fraction_leaf=0.0,
                 presort=False, random_state=None, splitter='best'))])
 
@@ -2394,16 +2495,16 @@ grid.score(features_test, labels_test)
 main()
 ```
 
-    Pipeline(steps=[('scaler', StandardScaler(copy=True, with_mean=True, with_std=True)), ('selector', SelectKBest(k=18, score_func=<function f_classif at 0x7fc4691149b0>)), ('reducer', PCA(copy=True, iterated_power='auto', n_components=2, random_state=42,
+    Pipeline(steps=[('scaler', StandardScaler(copy=True, with_mean=True, with_std=True)), ('selector', SelectKBest(k=18, score_func=<function f_classif at 0x7fcd1a2087d0>)), ('reducer', PCA(copy=True, iterated_power='auto', n_components=2, random_state=42,
       svd_solver='auto', tol=0.0, whiten=False)), ('classifi...it=2, min_weight_fraction_leaf=0.0,
                 presort=False, random_state=None, splitter='best'))])
     	Accuracy: 0.67947	Precision: 0.28591	Recall: 0.93750	F1: 0.43819	F2: 0.64398
     	Total predictions: 15000	True positives: 1875	False positives: 4683	False negatives:  125	True negatives: 8317
     
-    
+
 
 Com isto, atendemos ao requisito dos valores mínimos para *precision* e *recall*, arrendondano para uma casa decimal.    
-> Accuracy: 0.67947	Precision: 0.28591	Recall: 0.93750	F1: 0.43819	F2: 0.64398     
+> Accuracy: 0.67947	Precision: 0.28591	Recall: 0.93750	F1: 0.43819	F2: 0.64398 
 
 - Precision = 0.3     
 - Recall = 0.9
@@ -2412,14 +2513,20 @@ Com isto, atendemos ao requisito dos valores mínimos para *precision* e *recall
 # 6. Interpretação e Discussão dos Resultados
 
 Lembrando que o objetivo deste projeto é determinar se um funcionário da Enron é ou não um POI (Persons Of Interest), ou seja, estamos buscando a performance para uma classe específicas, os POIs. Em casos deste tipo, as métricas mais significativas são a [*recall* e a precision](http://scikit-learn.org/stable/auto_examples/model_selection/plot_precision_recall.html).   
-- Recall: de todos os casos que deveriam ser rotulados como positivos, isto é POIs, quantos foram corretamente classificados?    
+- __Recall__: de todos os casos que deveriam ser rotulados como positivos, isto é POIs, quantos foram corretamente classificados?    
 A equação para isto é:     
 $$ Recall = {{True Positives\over { True Positives + False Negatives} }}     $$     
 
 
-- Precision: de todos os itens que foram rotulados como positivos, quantos foram corretamente classificados?    
+- __Precision__: de todos os itens que foram rotulados como positivos, quantos foram corretamente classificados?    
 A equação para isto é:      
 $$ Precison = {{True Positives\over { True Positives + False Positives} }}     $$ 
+
+
+- A métrica __F1__, utilizada como parâmetro em __GridSearchCV__ relaciona as métricas recall e precision, na qual ela é a média harmônica destas duas, sendo sua expressão matemática.
+
+
+$$ F1 = 2*{{Precision * Recall}\over { Precision + Recall} }     $$ 
 
 No contexto deste projeto, um __Falso Positivo__ é um inocente que será investigado; considerando uma investigação justa, ele , se inocente, poderá comprovar isto sem problemas no processo judicial. Já um __Falso Negativo__ é um POI que não será investigado, isto é, um provável criminoso que ficará impune, portanto, algo indesejável. Com isto, analisando as equações acima, a métrica __*recall*__ alta é o mais desejável neste caso.
 Sendo assim, a interpretação dos valores obtidos com a máquina de aprendizado proposta significam que:
@@ -2430,8 +2537,20 @@ Portanto, se a máquina proposta fosse utilizada como tomadora de decisão em pr
 
 # Referências
 
+[Comparação de algoritmos de aprendizagem de máquina para construção de modelos preditivos de diabetes não diagnosticado](http://www.lume.ufrgs.br/handle/10183/140847)
+
+[A Comparison of Supervised Classification Methods for the Prediction of Substrate Type Using Multibeam Acoustic and Legacy Grain-Size Data](http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0093950)
+
+[Ajuste de Parâmetros em Algoritmos de Aprendizado de Máaquina Utilizando Transferência de Aprendizado](http://www.lbd.dcc.ufmg.br/colecoes/eniac/2013/0069.pdf)
+
 [API design for machine learning software: experiences from the scikit-learn project](https://www.researchgate.net/publication/256326897_API_design_for_machine_learning_software_experiences_from_the_scikit-learn_project)
+
+[Distributed Tuning of Machine Learning Algorithms using MapReduce Clusters](https://pdfs.semanticscholar.org/9819/9ab0a73f81bb93d2b91acadcd54d01252c4b.pdf)
 
 [Python Data Science Class](http://jeremy.kiwi.nz/pythoncourse/tag/Applied%20Statistics%20stream/)
 
 [SciKit-learn](http://scikit-learn.org/stable/)
+
+[Sebastian Raschka](https://sebastianraschka.com/blog/2016/model-evaluation-selection-part3.html)
+
+[Tuning Metaheuristics: A Machine Learning Perspective](http://zeus.inf.ucv.cl/~bcrawford/MII-748-METAHEURISTICAS/Tuning%20Metaheuristics.pdf)
